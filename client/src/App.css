@@ -1,0 +1,29 @@
+@media only screen and (max-width: 767px) {
+  .ui.fluid.container .ui.stackable.top.fixed.menu .right.menu.not-stackable {
+    /* background-color: red; */
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    padding-left: 10px;
+  }
+
+  .ui.container .ui.stackable.top.fixed.menu .right.menu.not-stackable .item {
+    width: auto !important;
+  }
+  .ui.container
+    .ui.stackable.top.fixed.menu
+    .right.menu.not-stackable
+    .item::before {
+    content: none;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .ui.vertical.computer.only.menu {
+    display: none;
+  }
+}
+
+div.ten.wide.column p {
+  color: rgba(255, 255, 255, 0.5);
+}
