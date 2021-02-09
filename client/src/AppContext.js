@@ -16,7 +16,7 @@ export const Provider = (props) => {
   const login = async () => setLoggedIn(true);
   const logout = async () => setLoggedIn(false);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, searchFor] = useState("");
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const Provider = (props) => {
         message,
         setMessage,
         searchTerm,
-        setSearchTerm,
+        searchFor,
         results,
       }}
     >

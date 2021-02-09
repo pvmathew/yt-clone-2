@@ -94,8 +94,8 @@ router.post(
 
     try {
       const newVideo = await pool.query(
-        "INSERT INTO videos (t_name_user, t_name_video, t_desc, t_url, t_thumb_url, d_upload_date, i_num_views) VALUES ($1,$2,$3,$4,$5,$6,$7)",
-        [username, name, desc, url, thumbUrl, currentDate, 0]
+        "INSERT INTO videos (t_name_user, t_name_video, t_desc, t_url, t_thumb_url, d_upload_date, i_num_views, i_num_likes) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+        [username, name, desc, url, thumbUrl, currentDate, 0, 0]
       );
 
       if (newVideo.rowCount) {

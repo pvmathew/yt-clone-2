@@ -8,8 +8,8 @@ router.get("/", async (req, res, next) => {
   console.log(searchTerm);
 
   const allVideos = await pool.query(
-    "SELECT * FROM videos WHERE t_name_video ~ $1",
-    [searchTerm]
+    "SELECT * FROM videos WHERE t_name_video ILIKE $1",
+    ["%" + searchTerm + "%"]
   );
   res.status(201).json(allVideos.rows);
 });

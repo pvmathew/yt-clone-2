@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Label, Input } from "semantic-ui-react";
+import { Menu, Input } from "semantic-ui-react";
 
 const DashboardMenu = () => {
   let activeItem = "";
@@ -11,15 +11,14 @@ const DashboardMenu = () => {
       className="computer only"
     >
       <Menu.Item name="inbox" active={activeItem === "inbox"}>
-        <Label color="teal">1</Label>
+        {/* <Label color="teal">1</Label> */}
         <Menu.Header>Uploads</Menu.Header>
 
         <Input icon="search" placeholder="Search videos..." />
 
         <Menu.Menu>
-          <Menu.Item name="rails" active={activeItem === "rails"} />
-          <Menu.Item name="python" active={activeItem === "python"} />
-          <Menu.Item name="php" active={activeItem === "php"} />
+          <Menu.Item name="comments" active={activeItem === "comments"} />
+          <Menu.Item name="likes" active={activeItem === "likes"} />
         </Menu.Menu>
       </Menu.Item>
 
