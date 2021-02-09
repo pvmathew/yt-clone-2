@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const pool = require("./pool");
+const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
@@ -28,29 +29,29 @@ router.post("/register", async (req, res) => {
 
   // if field is missing
   if (!username || !email || !password) {
-    res.send("Please fill in all fields.");
+    res.send({ success: false, message: "Please fill in all fields." });
   }
 
   // hash password
-  bcrypt.hash(password, 10, async (err, password) => {
-    try {
+  try {
+    bcrypt.hash(password, 10, async (err, password) => {
       const newAccount = await pool.query(
         "INSERT INTO users (t_email, t_password, t_name_user) VALUES ($1,$2,$3) ON CONFLICT (t_email) DO NOTHING;",
         [email, password, username]
       );
 
       if (newAccount.rowCount) {
-        res.send({ error: false, message: "Account successfully created." });
+        res.send({ success: true, message: "Account successfully created." });
       } else {
         res.send({
-          error: true,
-          message: "An account with that email already exists.",
+          success: false,
+          meewssage: "An account with that email already exists.",
         });
       }
-    } catch (err) {
-      throw err;
-    }
-  });
+    });
+  } catch (err) {
+    throw err;
+  }
 });
 
 router.get("/sessions", (req, res) => {

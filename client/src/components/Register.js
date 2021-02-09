@@ -1,74 +1,166 @@
-import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import FlashMessage from "./FlashMessage";
+import { Link, useHistory } from "react-router-dom";
+import { Context } from "../AppContext";
+import React, { useState, useContext } from "react";
+import { sendRegisterRequest } from "../api/auth";
 
-const Login = () => {
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment,
+  Container,
+} from "semantic-ui-react";
+
+const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState("");
+  const { login, message, setMessage } = useContext(Context);
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-
-    // const newUser = { username, email, password, confirmPassword };
 
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match!");
+      setMessage("Passwords do not match!");
+    } else if (
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      )
+    ) {
+      setMessage("Please enter a valid email!");
     } else {
-      // const response = await fetch("http://localhost:5000/user/register", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(newUser),
-      //   mode: "cors",
-      // });
-      // const data = await response.json();
-      // console.log(data);
+      const newUser = { username, email, password, confirmPassword };
+      const { success, message } = await sendRegisterRequest(newUser);
+      if (success) {
+        login();
+        setMessage(message);
+        setTimeout(() => {
+          setMessage("");
+          history.push("/home");
+        }, 3000);
+      } else {
+        setMessage(message);
+      }
     }
   };
 
   return (
-    <Fragment>
-      <div className="login-window">
-        <div className="logo">MeTube</div>
+    <Container
+      fluid
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.87)",
+      }}
+    >
+      <Grid.Column style={{ maxWidth: 320 }}>
+        <Form onSubmit={(e) => handleSubmit(e)}>
+          <Segment style={{ height: "100vh" }}>
+            <Header
+              as="h1"
+              textAlign="center"
+              style={{ fontSize: "4em", marginTop: 20 }}
+            >
+              MeTube
+            </Header>
+            <Header as="h2" textAlign="center">
+              Register a new account
+            </Header>
+            <Form.Input
+              fluid
+              icon="envelope"
+              iconPosition="left"
+              placeholder="E-mail address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+            />
+            <Form.Input
+              fluid
+              icon="user"
+              iconPosition="left"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+            />
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+            />
+            <Form.Input
+              fluid
+              icon=""
+              iconPosition="left"
+              placeholder="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              name="confirmPassword"
+            />
 
-        <div className="window-header">Register</div>
-
-        <form id="login-form" onSubmit={(e) => handleSubmit(e)}>
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <button type="submit">Create Account</button>
-          {errorMessage && <div className="error-bubble">{errorMessage}</div>}
-        </form>
-
-        <Link to="/">I already have an account.</Link>
-      </div>
-    </Fragment>
+            <Button fluid size="large" type="submit" data-testid="login-button">
+              Register
+            </Button>
+            <Message>
+              <Link to="/login">Wait, I already have an account!</Link>
+            </Message>
+            <FlashMessage>{message}</FlashMessage>
+          </Segment>
+        </Form>
+      </Grid.Column>
+    </Container>
   );
+
+  // return (
+  //   <Fragment>
+  //     <div className="login-window">
+  //       <div className="logo">MeTube</div>
+
+  //       <div className="window-header">Register</div>
+
+  //       <form id="login-form" onSubmit={(e) => handleSubmit(e)}>
+  //         <input
+  //           type="text"
+  //           placeholder="username"
+  //           value={username}
+  //           onChange={(e) => setUsername(e.target.value)}
+  //         />
+  //         <input
+  //           type="text"
+  //           placeholder="email"
+  //           value={email}
+  //           onChange={(e) => setEmail(e.target.value)}
+  //         />
+  //         <input
+  //           type="password"
+  //           placeholder="password"
+  //           value={password}
+  //           onChange={(e) => setPassword(e.target.value)}
+  //         />
+  //         <input
+  //           type="password"
+  //           placeholder="confirm password"
+  //           value={confirmPassword}
+  //           onChange={(e) => setConfirmPassword(e.target.value)}
+  //         />
+  //         <button type="submit">Create Account</button>
+  //         {errorMessage && <div className="error-bubble">{errorMessage}</div>}
+  //       </form>
+
+  //       <Link to="/login">I already have an account.</Link>
+  //     </div>
+  //   </Fragment>
+  // );
 };
 
-export default Login;
+export default Register;

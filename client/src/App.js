@@ -37,7 +37,7 @@ export const Routes = () => (
           </Page>
         )}
       />
-      {/* <Route exact path="/register" component={Register} /> */}
+      <Route exact path="/register" component={Register} />
       {/* <Route exact path={["/", "/home"]} component={Home} /> */}
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
       <PrivateRoute exact path="/upload" component={Upload} />

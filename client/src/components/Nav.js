@@ -59,9 +59,9 @@ const Nav = () => {
         <Menu.Item as="a" onClick={() => history.push("/home")}>
           Home
         </Menu.Item>
-        <Menu.Item as="a" onClick={() => history.push("/home")}>
+        {/* <Menu.Item as="a" onClick={() => history.push("/home")}>
           Trending
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item as="a" onClick={() => history.push("/upload")}>
           Upload
         </Menu.Item>

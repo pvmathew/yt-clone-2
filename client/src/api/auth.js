@@ -30,3 +30,15 @@ export async function sendLogoutRequest(email, password) {
   const { success, message } = data;
   return { success, message };
 }
+
+export async function sendRegisterRequest(newUser) {
+  const response = await fetch("http://localhost:2000/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newUser),
+    mode: "cors",
+  });
+  const data = await response.json();
+  const { success, message } = data;
+  return { success, message };
+}

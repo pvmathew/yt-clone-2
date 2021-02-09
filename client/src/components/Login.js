@@ -23,7 +23,6 @@ const Login = (props) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // const { success, message } = await sendLoginRequest(email, password);
     const { success, message } = await sendLoginRequest(email, password);
     if (success) {
       login();
@@ -81,7 +80,7 @@ const Login = (props) => {
               Login
             </Button>
             <Message>
-              <Link to="/home">I don't have an account yet.</Link>
+              <Link to="/register">I don't have an account yet.</Link>
             </Message>
             <FlashMessage>{message}</FlashMessage>
           </Segment>
