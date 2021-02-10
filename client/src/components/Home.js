@@ -18,20 +18,11 @@ const Home = (props) => {
       }}
     >
       <Nav />
-      <Segment
-        style={{
-          paddingTop: "7em",
-          paddingBottom: "4em",
-          backgroundColor: "white",
-          margin: 0,
-        }}
-      >
+      <Segment>
         <Container text>
           <FlashMessage>{message}</FlashMessage>
           <Header as="h1">Welcome to MeTube!</Header>
-          <p>
-          Try typing into the search bar above to look for a video.
-          </p>
+          <p>Try typing into the search bar above to look for a video.</p>
         </Container>
       </Segment>
       <Footer />

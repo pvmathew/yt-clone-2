@@ -56,25 +56,11 @@ const Upload = () => {
     }
   };
   return (
-    <Container
-      fluid
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.87)",
-        minHeight: "100vh",
-      }}
-    >
+    <Container fluid id="main-container">
       <Nav />
-      <Segment
-        fluid
-        style={{
-          paddingTop: "7em",
-          paddingBottom: "4em",
-          backgroundColor: "white",
-          margin: 0,
-        }}
-      >
+      <Segment fluid>
         <Container text>
-          <Segment>
+          <Segment id="uploader-container">
             <Header as="h1">Upload a Video</Header>
             <Divider />
             <Form onSubmit={(e) => handleUpload(e)}>

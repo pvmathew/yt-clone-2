@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Container,
   Menu,
@@ -16,6 +16,21 @@ import "../App.css";
 const Nav = () => {
   const { logout, setMessage, isLoggedIn } = useContext(Context);
   const history = useHistory();
+
+  const [width, setWidth] = useState(window.innerWidth);
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
+  let isMobile = width <= 768;
+
   const handleLogout = async () => {
     const { success, message } = await sendLogoutRequest();
 
@@ -44,13 +59,28 @@ const Nav = () => {
   );
 
   const options = [
-    { key: "uploads", text: "My Videos", icon: "video", onClick: () => history.push("/dashboard") },
-    { key: "user", text: "Account", icon: "user", onClick: () => history.push("/dashboard")  },
-    { key: "settings", text: "Settings", icon: "settings", onClick: () => history.push("/dashboard")  },
+    {
+      key: "uploads",
+      text: "My Videos",
+      icon: "video",
+      onClick: () => history.push("/dashboard"),
+    },
+    {
+      key: "user",
+      text: "Account",
+      icon: "user",
+      onClick: () => history.push("/dashboard"),
+    },
+    {
+      key: "settings",
+      text: "Settings",
+      icon: "settings",
+      onClick: () => history.push("/dashboard"),
+    },
   ];
 
   return (
-    <Menu fixed="top" stackable>
+    <Menu fixed={isMobile ? "" : "top"} stackable>
       <Container style={{ backgroundColor: "white" }}>
         <Menu.Item header>
           <Icon name="caret square right" />
@@ -68,18 +98,20 @@ const Nav = () => {
         <SearchBar />
       </Container>
       <Menu.Menu position="right" className="not-stackable">
-        <Dropdown
-          trigger={ProfilePic}
-          options={options}
-          pointing="top left"
-          icon={null}
-          style={{
-            marginTop: "auto",
-            marginBottom: "auto",
-            marginRight: "10px",
-          }}
-        />
         <Menu.Item>
+          <Dropdown
+            trigger={ProfilePic}
+            options={options}
+            pointing="top left"
+            icon={null}
+            style={{
+              marginTop: "auto",
+              marginBottom: "auto",
+              marginRight: "25px",
+              display: "inline-block",
+              width: "30px",
+            }}
+          />
           {isLoggedIn ? (
             <Button color="red" onClick={() => handleLogout()}>
               Logout

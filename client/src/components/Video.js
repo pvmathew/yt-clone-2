@@ -52,15 +52,7 @@ const Home = (props) => {
       }}
     >
       <Nav />
-      <Segment
-        fluid
-        style={{
-          paddingTop: "7em",
-          paddingBottom: "4em",
-          backgroundColor: "white",
-          margin: 0,
-        }}
-      >
+      <Segment fluid>
         <Container text>
           <FlashMessage>{message}</FlashMessage>
           <Header as="h2">{video.t_name_video}</Header>

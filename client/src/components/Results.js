@@ -25,15 +25,7 @@ const Home = (props) => {
       }}
     >
       <Nav />
-      <Segment
-        fluid
-        style={{
-          paddingTop: "7em",
-          paddingBottom: "4em",
-          backgroundColor: "white",
-          margin: 0,
-        }}
-      >
+      <Segment fluid id="wrapper-segment">
         <Container text>
           <FlashMessage>{message}</FlashMessage>
           <Header as="h1">Search Results</Header>
