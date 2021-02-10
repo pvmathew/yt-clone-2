@@ -25,7 +25,7 @@ const Home = (props) => {
       }}
     >
       <Nav />
-      <Segment fluid id="wrapper-segment">
+      <Segment id="wrapper-segment">
         <Container text>
           <FlashMessage>{message}</FlashMessage>
           <Header as="h1">Search Results</Header>

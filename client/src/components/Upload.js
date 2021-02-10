@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Container,
@@ -58,7 +58,7 @@ const Upload = () => {
   return (
     <Container fluid id="main-container">
       <Nav />
-      <Segment fluid>
+      <Segment>
         <Container text>
           <Segment id="uploader-container">
             <Header as="h1">Upload a Video</Header>

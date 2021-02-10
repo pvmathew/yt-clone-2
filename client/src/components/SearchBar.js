@@ -1,11 +1,10 @@
-import React, { Fragment, useState, useContext } from "react";
-import { Button, Input, Icon, Grid, Responsive, Form } from "semantic-ui-react";
+import React, { useState, useContext } from "react";
+import { Icon, Form } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { Context } from "../AppContext";
 
 const SearchBar = () => {
   const SearchIcon = <Icon name="search" />;
-  const LogoutIcon = <Icon name="sign-out" />;
   const { searchFor } = useContext(Context);
   const [input, setInput] = useState("");
   const history = useHistory();

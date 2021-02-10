@@ -80,7 +80,7 @@ const Nav = () => {
   ];
 
   return (
-    <Menu fixed={isMobile ? "" : "top"} stackable>
+    <Menu fixed={isMobile ? null : "top"} stackable>
       <Container style={{ backgroundColor: "white" }}>
         <Menu.Item header>
           <Icon name="caret square right" />

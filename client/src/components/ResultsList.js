@@ -1,8 +1,7 @@
 import React, { Fragment, useContext } from "react";
-import { Segment, Image, List, Icon, Button, Grid } from "semantic-ui-react";
+import { List, Icon, Grid } from "semantic-ui-react";
 import { Context } from "../AppContext";
 import ResultItem from "./ResultListtem";
-import ResultGridItem from "./ResultGridItem";
 
 const ResultsList = () => {
   const { results } = useContext(Context);
@@ -17,7 +16,6 @@ const ResultsList = () => {
         </Grid.Column>
         <Grid.Column floated="right" width={2}>
           <Icon name="list" />
-          <Icon name="grid layout" />
         </Grid.Column>
       </Grid>
       <List>
@@ -26,8 +24,8 @@ const ResultsList = () => {
             <ResultGridItem result={result} />
           ))}
         </Grid> */}
-        {results.map((result) => (
-          <ResultItem result={result} />
+        {results.map((result, index) => (
+          <ResultItem key={index} result={result} />
         ))}
       </List>
     </Fragment>

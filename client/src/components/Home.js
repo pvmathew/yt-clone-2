@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Header, Segment } from "semantic-ui-react";
 import FlashMessage from "./FlashMessage";
 import Nav from "./Nav";

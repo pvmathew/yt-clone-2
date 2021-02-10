@@ -10,6 +10,7 @@ const ResultItem = (props) => {
 
   return (
     <List.Item
+      key={props.index}
       style={{ cursor: "pointer" }}
       onClick={() => history.push("/video/" + result.id)}
     >

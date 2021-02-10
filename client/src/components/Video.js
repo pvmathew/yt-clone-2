@@ -6,18 +6,13 @@ import {
   Header,
   Segment,
   Image,
-  List,
-  Dimmer,
-  Loader,
   Icon,
-  Grid,
   Divider,
-  TextArea,
-  Button,
 } from "semantic-ui-react";
 import FlashMessage from "./FlashMessage";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import CommentSection from "./CommentSection";
 import { useContext } from "react";
 import { Context } from "../AppContext";
 import { useEffect } from "react";
@@ -29,17 +24,18 @@ const Video = (props) => {
   const { message, isLoggedIn } = useContext(Context);
   const { id } = useParams();
   const [isLiked, setLiked] = useState(false);
+  const [comments, setComments] = useState([]);
   const [video, setVideo] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getVideo(id);
+      console.log(data);
       setVideo(data);
       setLiked(data.liked);
+      setComments(data.a_comments);
     };
     fetchData();
-
-    console.log(isLiked);
   }, [id]);
 
   return (
@@ -51,7 +47,7 @@ const Video = (props) => {
       }}
     >
       <Nav />
-      <Segment fluid>
+      <Segment>
         <Container text>
           <FlashMessage>{message}</FlashMessage>
           <Header as="h2">{video.t_name_video}</Header>
@@ -103,42 +99,12 @@ const Video = (props) => {
               </Segment>
             </Segment.Group>
           </Segment.Group>
-
-          <Segment>COMMENTS - 0</Segment>
-          <Image
-            src="../../images/image.png"
-            circular
-            style={{
-              border: "white 2px solid",
-              boxShadow: "0px 0px 1px #999",
-            }}
-            avatar
+          <CommentSection
+            comments={comments}
+            setComments={setComments}
+            isLoggedIn={isLoggedIn}
+            videoID
           />
-
-          {/* {video.t_name_user}
-          <span style={{ display: "block" }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-            numquam officiis velit fugit corrupti, expedita odio, voluptate
-            commodi harum exercitationem repellendus totam. Assumenda soluta
-            animi eaque iusto maiores amet temporibus.
-          </span> */}
-          <Divider />
-
-          {/* <Segment> */}
-          <Segment style={{ padding: 0 }} attached>
-            <TextArea
-              rows={3}
-              style={{
-                minWidth: "100%",
-                maxWidth: "100%",
-                border: "none",
-              }}
-            ></TextArea>
-          </Segment>
-          <Button attached="bottom">
-            Send
-            <Icon name="right arrow" />
-          </Button>
         </Container>
       </Segment>
       <Footer />
