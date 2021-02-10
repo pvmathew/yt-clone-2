@@ -26,6 +26,7 @@ CREATE TABLE videos(
     d_latest_edit DATE,
     i_num_views INT,
     i_num_likes INT,
+    a_comments TEXT[]
 );
 
 -- register new user

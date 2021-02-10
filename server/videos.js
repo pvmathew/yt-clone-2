@@ -69,4 +69,19 @@ router.put("/:id", async (req, res, next) => {
   );
 });
 
+//commenting on videos
+router.post("/:id", async (req, res, next) => {
+  if (!req.isAuthenticated()) req.end;
+  const username = req.user.t_name_user;
+  const { id, comment } = req.body;
+  const date = new Date();
+
+  const json = "[" + JSON.stringify({ username, comment, date }) + "]";
+  const result = await pool.query(
+    `UPDATE videos SET a_comments = coalesce(a_comments::jsonb,'[]'::jsonb) || $2::jsonb WHERE id = $1 returning a_comments;`,
+    [id, json]
+  );
+  return res.status(200).json(result.rows[0]);
+});
+
 module.exports = router;
