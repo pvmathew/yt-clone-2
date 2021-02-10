@@ -12,7 +12,8 @@ CREATE TABLE users(
     i_security_level INT,
     d_visit_first DATE,
     d_visit_last DATE,
-    b_enabled BOOL
+    b_enabled BOOL,
+    a_liked INT[]
 );
 
 -- create video table

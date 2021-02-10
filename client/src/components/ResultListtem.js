@@ -49,7 +49,9 @@ const ResultItem = (props) => {
             <Icon name="eye"></Icon>
           </Segment>
           <Segment textAlign="right">
-            <p style={{ display: "inline", marginRight: "0.5em" }}>0</p>
+            <p style={{ display: "inline", marginRight: "0.5em" }}>
+              {result.i_num_likes}
+            </p>
             <Icon name="thumbs up"></Icon>
           </Segment>
         </Segment.Group>

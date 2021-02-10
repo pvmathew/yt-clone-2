@@ -1,5 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player/file";
+
 import {
   Container,
   Header,
@@ -21,27 +22,25 @@ import { useContext } from "react";
 import { Context } from "../AppContext";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ResultsList from "./ResultsList";
 import { useState } from "react";
-import { getVideo } from "../api/video";
+import { getVideo, likeVideo } from "../api/video";
 
-const Home = (props) => {
-  const { message } = useContext(Context);
+const Video = (props) => {
+  const { message, isLoggedIn } = useContext(Context);
   const { id } = useParams();
-
+  const [isLiked, setLiked] = useState(false);
   const [video, setVideo] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getVideo(id);
       setVideo(data);
+      setLiked(data.liked);
     };
     fetchData();
-  }, [id]);
 
-  // if (!video) {
-  //   return <Loader />;
-  // }
+    console.log(isLiked);
+  }, [id]);
 
   return (
     <Container
@@ -87,8 +86,20 @@ const Home = (props) => {
                 <Icon name="eye"></Icon>
               </Segment>
               <Segment textAlign="right">
-                <p style={{ display: "inline", marginRight: "0.5em" }}>0</p>
-                <Icon name="thumbs up"></Icon>
+                <p style={{ display: "inline", marginRight: "0.5em" }}>
+                  {video.i_num_likes}
+                </p>
+                <Icon
+                  name="thumbs up"
+                  id={!isLoggedIn || isLiked ? "" : "thumbs-up"}
+                  color={isLiked ? "blue" : "black"}
+                  onClick={() => {
+                    if (isLoggedIn && !isLiked) {
+                      setLiked(true);
+                      likeVideo(id);
+                    }
+                  }}
+                ></Icon>
               </Segment>
             </Segment.Group>
           </Segment.Group>
@@ -135,4 +146,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default Video;

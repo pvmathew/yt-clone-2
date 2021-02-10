@@ -8,6 +8,16 @@ div.ui.fluid.container > .ui.segment {
   padding: 1em !important;
 }
 
+#thumbs-up {
+  cursor: pointer;
+  transition: 0.2s all;
+}
+
+#thumbs-up:hover {
+  transform: scale(1.2);
+}
+
+
 @media only screen and (max-width: 767px) {
   .ui.fluid.container .ui.stackable.top.fixed.menu .right.menu.not-stackable {
     /* background-color: red; */
