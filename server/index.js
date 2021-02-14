@@ -31,10 +31,19 @@ if (!isDev && cluster.isMaster) {
 
   passport.setup(app);
 
-  app.use(express.static(__dirname + "/public"));
+  app.use(express.static(path.resolve(__dirname + "/public")));
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 
   app.use(express.json());
+
+  process
+    .on("unhandledRejection", (reason, p) => {
+      console.error(reason, "Unhandled Rejection at Promise", p);
+    })
+    .on("uncaughtException", (err) => {
+      console.error(err, "Uncaught Exception thrown");
+      process.exit(1);
+    })
 
   // Answer API requests.
   app.get("/api", function (req, res) {

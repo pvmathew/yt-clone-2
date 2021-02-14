@@ -12,6 +12,7 @@ const router = express.Router();
 // Only allow file to upload if logged in
 const checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
+    console.log("User is authenticated");
     next();
   } else {
     res.status(401).json({ message: "Please login." });
@@ -19,11 +20,18 @@ const checkAuthenticated = (req, res, next) => {
 };
 
 // require login to upload
-router.use(checkAuthenticated);
+// router.use(checkAuthenticated);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __dirname + "/public/videos");
+    console.log(
+      "Destination (Resolve): " + path.resolve(__dirname, +"/public/videos")
+    );
+    console.log(
+      "Destination (Join): " + path.join(__dirname, +"/public/videos")
+    );
+    console.log("Destination (None): " + __dirname, +"/public/videos");
+    cb(null, path.join(__dirname, +"/public/videos"));
   },
   filename: (req, file, cb) => {
     console.log("Filename");
@@ -48,17 +56,6 @@ const upload = multer({
 });
 
 const generateThumbnail = (req, res, next) => {
-  // req.file
-  // {
-  //   fieldname: 'file',
-  //   originalname: 'sorry.mp4',
-  //   encoding: '7bit',
-  //   mimetype: 'video/mp4',
-  //   destination: 'public/videos',
-  //   filename: '1604904740237.mp4',
-  //   path: 'public/videos/1604904740237.mp4',
-  //   size: 4236260
-  // }
   console.log("Generating thumbnail");
 
   const filename = req.file.filename.split(".")[0] + ".png";
@@ -69,7 +66,7 @@ const generateThumbnail = (req, res, next) => {
       timemarks: ["1"], // number of seconds
       filename: filename,
     },
-    __dirname + "/public/thumbnails",
+    path.resolve(__dirname, "/public/thumbnails"),
     function (err) {
       console.log("screenshot was made");
     }
