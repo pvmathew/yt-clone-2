@@ -57,6 +57,7 @@ const Register = () => {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right center",
+        backgroundColor: "black",
       }}
     >
       <p

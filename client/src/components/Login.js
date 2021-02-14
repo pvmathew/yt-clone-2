@@ -44,6 +44,7 @@ const Login = (props) => {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right center",
+        backgroundColor: "black"
       }}
     >
       <p
