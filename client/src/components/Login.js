@@ -46,6 +46,29 @@ const Login = (props) => {
         backgroundPosition: "right center",
       }}
     >
+      <p
+        style={{
+          position: "absolute",
+          right: "25px",
+          bottom: "50px",
+          color: "white",
+        }}
+      >
+        Created by Pavin Mathew
+      </p>
+      <Button
+        href="https://www.pavinmathew.com"
+        basic
+        color="yellow"
+        size="small"
+        style={{
+          position: "absolute",
+          right: "20px",
+          bottom: "20px",
+        }}
+      >
+        View my Portfolio
+      </Button>
       <Grid.Column
         style={{ maxWidth: 320, boxShadow: "2px 10px 10px #000000" }}
       >
@@ -91,6 +114,7 @@ const Login = (props) => {
           </Segment>
         </Form>
       </Grid.Column>
+      <Container></Container>
     </Container>
   );
 };

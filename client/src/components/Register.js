@@ -59,6 +59,29 @@ const Register = () => {
         backgroundPosition: "right center",
       }}
     >
+      <p
+        style={{
+          position: "absolute",
+          right: "25px",
+          bottom: "50px",
+          color: "white",
+        }}
+      >
+        Created by Pavin Mathew
+      </p>
+      <Button
+        href="https://www.pavinmathew.com"
+        basic
+        color="yellow"
+        size="small"
+        style={{
+          position: "absolute",
+          right: "20px",
+          bottom: "20px",
+        }}
+      >
+        View my Portfolio
+      </Button>
       <Grid.Column style={{ maxWidth: 320 }}>
         <Form onSubmit={(e) => handleSubmit(e)}>
           <Segment style={{ height: "100vh" }}>
