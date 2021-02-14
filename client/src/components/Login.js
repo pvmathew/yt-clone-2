@@ -40,10 +40,15 @@ const Login = (props) => {
     <Container
       fluid
       style={{
-        backgroundColor: "rgba(0, 0, 0, 0.87)",
+        backgroundImage: `url(${"images/main-bg.jpeg"})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right center",
       }}
     >
-      <Grid.Column style={{ maxWidth: 320 }}>
+      <Grid.Column
+        style={{ maxWidth: 320, boxShadow: "2px 10px 10px #000000" }}
+      >
         <Form onSubmit={(e) => handleLogin(e)}>
           <Segment style={{ height: "100vh" }}>
             <Header

@@ -53,7 +53,10 @@ const Register = () => {
     <Container
       fluid
       style={{
-        backgroundColor: "rgba(0, 0, 0, 0.87)",
+        backgroundImage: `url(${"images/main-bg.jpeg"})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right center",
       }}
     >
       <Grid.Column style={{ maxWidth: 320 }}>
