@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const pool = require("./pool");
+const aws = require("aws-sdk");
 
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
@@ -15,87 +16,79 @@ const checkAuthenticated = (req, res, next) => {
     console.log("User is authenticated");
     next();
   } else {
+    console.log("req.user wasnt defined!")
     res.status(401).json({ message: "Please login." });
   }
 };
 
 // require login to upload
-// router.use(checkAuthenticated);
+router.use(checkAuthenticated);
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    console.log(
-      "Destination (Resolve): " + path.resolve(__dirname, +"/public/videos")
-    );
-    console.log(
-      "Destination (Join): " + path.join(__dirname, +"/public/videos")
-    );
-    console.log("Destination (None): " + __dirname, +"/public/videos");
-    cb(null, path.join(__dirname, +"/public/videos"));
-  },
-  filename: (req, file, cb) => {
-    console.log("Filename");
-    console.log(file);
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype == "video/mp4") {
-    console.log("Filter ok");
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  onFileUploadStart: () => {
-    console.log(file.originalname + " is starting to upload ...");
-  },
+const S3_BUCKET = process.env.AWS_BUCKET;
+// get signature for file upload
+router.get("/signature", (req, res) => {
+  const s3 = new aws.S3();
+  const fileName =
+    "videos/" + Date.now() + path.extname(req.query["file-name"]);
+  const fileType = req.query["file-type"];
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 600,
+    ContentType: fileType,
+    ACL: "public-read",
+  };
+
+  console.log("Params:" + s3Params);
+
+  s3.getSignedUrl("putObject", s3Params, (err, data) => {
+    if (err) {
+      return res.end();
+    }
+    const returnData = {
+      signature: data,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
+    };
+
+    res.write(JSON.stringify(returnData));
+    res.end();
+  });
 });
 
 const generateThumbnail = (req, res, next) => {
   console.log("Generating thumbnail");
-
-  const filename = req.file.filename.split(".")[0] + ".png";
-
-  var proc = new ffmpeg(req.file.path).takeScreenshots(
-    {
+  const { name, desc, url } = req.body;
+  console.log(req.body);
+  var screenshot = new ffmpeg({ source: url }) // put in the source path of the video
+    .takeScreenshots({
       count: 1,
-      timemarks: ["1"], // number of seconds
-      filename: filename,
-    },
-    path.resolve(__dirname, "/public/thumbnails"),
-    function (err) {
-      console.log("screenshot was made");
-    }
-  );
+      timemarks: ["50%"],
+      filename: "screenshot.png",
+      folder: "./",
+    });
 
   next();
 };
 
 router.post(
   "/upload",
-  upload.single("file"),
-  generateThumbnail,
+  // generateThumbnail,
   async (req, res, next) => {
     console.log("Saving info into database");
-    const { name, desc } = req.body;
+    const { name, desc, url } = req.body;
     const username = req.user.t_name_user;
-    const url = "videos" + "/" + req.file.filename;
-    const thumbUrl =
-      "thumbnails" + "/" + req.file.filename.split(".")[0] + ".png";
+    // const thumbUrl =
+    //   "thumbnails" + "/" + req.file.filename.split(".")[0] + ".png";
     const currentDate = new Date();
 
     try {
       const newVideo = await pool.query(
         "INSERT INTO videos (t_name_user, t_name_video, t_desc, t_url, t_thumb_url, d_upload_date, i_num_views, i_num_likes) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
-        [username, name, desc, url, thumbUrl, currentDate, 0, 0]
+        [username, name, desc, url, "", currentDate, 0, 0]
       );
 
       if (newVideo.rowCount) {
-        res.status(201).json({ message: "File uploaded successfully." });
+        res.status(200).json({ message: "File uploaded successfully." });
       }
     } catch (err) {
       throw err;

@@ -1,17 +1,31 @@
 const session = require("express-session");
+const redis = require("redis");
+const redisStore = require("connect-redis")(session);
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const pool = require("./pool");
-
+const rediscli = redis.createClient(process.env.REDIS_URL);
 exports.setup = (app) => {
   app.use(
     session({
       secret: "supersecretkey",
+      store: new redisStore({
+        client: rediscli,
+        ttl: 86400,
+      }),
       saveUninitialized: false,
+      resave: false,
       cookie: { secure: false },
     })
   );
+  // app.use(
+  //   session({
+  //     secret: "supersecretkey",
+  //     saveUninitialized: false,
+  //     cookie: { secure: false },
+  //   })
+  // );
   app.use(passport.initialize());
   app.use(passport.session());
 

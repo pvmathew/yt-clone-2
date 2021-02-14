@@ -12,10 +12,6 @@ import ResultsList from "./ResultsList";
 const Home = (props) => {
   const { message } = useContext(Context);
 
-  useEffect(() => {
-    console.log("Results page has been rendered.");
-  }, []);
-
   return (
     <Container
       fluid

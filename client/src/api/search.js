@@ -1,4 +1,4 @@
-export async function getResults(searchTerm) {
+  export async function getResults(searchTerm) {
   const lowerCase = searchTerm.toLowerCase();
   const noSpace = lowerCase.replace(" ", "+");
 

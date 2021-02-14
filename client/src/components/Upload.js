@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Container,
   Header,
@@ -9,52 +8,17 @@ import {
   Button,
   Divider,
 } from "semantic-ui-react";
-import { Context } from "../AppContext";
 import FlashMessage from "./FlashMessage";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import { handleUpload } from "../api/upload";
 
 const Upload = () => {
   const [message, setMessage] = useState("");
-
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [file, setFile] = useState([]);
+  const [files, setFiles] = useState([]);
 
-  const history = useHistory();
-
-  const { logout } = useContext(Context);
-
-  const handleUpload = async (e) => {
-    e.preventDefault();
-
-    //make form data and append the selected file
-    const fd = new FormData();
-    fd.append("file", file[0], file[0].name);
-    fd.append("name", name);
-    fd.append("desc", desc);
-
-    const response = await fetch("/file/upload", {
-      method: "POST",
-      body: fd,
-      mode: "cors",
-      credentials: "include",
-    });
-
-    const data = await response.json();
-    const { message } = data;
-    setMessage(message);
-
-    if (response.status >= 200 && response.status < 300) {
-      setTimeout(() => {
-        history.push("/home");
-      }, 3000);
-    } else if (response.status > 300) {
-      setTimeout(() => {
-        logout();
-      }, 3000);
-    }
-  };
   return (
     <Container fluid id="main-container">
       <Nav />
@@ -63,7 +27,7 @@ const Upload = () => {
           <Segment id="uploader-container">
             <Header as="h1">Upload a Video</Header>
             <Divider />
-            <Form onSubmit={(e) => handleUpload(e)}>
+            <Form onSubmit={() => handleUpload({ name, desc, files })}>
               <Form.Field>
                 <label>Video Title</label>
                 <input onChange={(e) => setName(e.target.value)} value={name} />
@@ -82,7 +46,8 @@ const Upload = () => {
               <Form.Field>
                 <input
                   type="file"
-                  onChange={(e) => setFile(e.target.files)}
+                  accept="video/mp4,video/x-m4v,video/*"
+                  onChange={(e) => setFiles(e.target.files)}
                 ></input>
               </Form.Field>
               <Button type="submit">Submit</Button>
@@ -93,7 +58,6 @@ const Upload = () => {
       </Segment>
       <Footer />
     </Container>
-
   );
 };
 

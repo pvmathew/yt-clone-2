@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
   console.log("Reached /login endpoint");
-  console.log(req.body);
 
   res.status(201).json({
     success: true,

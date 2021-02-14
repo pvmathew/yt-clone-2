@@ -11,3 +11,5 @@ public/static
 .env.*.local
 videos
 thumbnails
+.env
+

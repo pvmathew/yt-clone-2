@@ -1,7 +1,6 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
 const passport = require("./passport");
-
 const path = require("path");
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
@@ -43,7 +42,7 @@ if (!isDev && cluster.isMaster) {
     .on("uncaughtException", (err) => {
       console.error(err, "Uncaught Exception thrown");
       process.exit(1);
-    })
+    });
 
   // Answer API requests.
   app.get("/api", function (req, res) {
