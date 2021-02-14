@@ -34,7 +34,7 @@ const Upload = () => {
     fd.append("name", name);
     fd.append("desc", desc);
 
-    const response = await fetch("http://localhost:2000/file/upload", {
+    const response = await fetch("/file/upload", {
       method: "POST",
       body: fd,
       mode: "cors",
@@ -94,24 +94,6 @@ const Upload = () => {
       <Footer />
     </Container>
 
-    // <Fragment>
-    //   <FlashMessage>{message}</FlashMessage>
-    //   You've made it to the upload page!
-    //   <form onSubmit={(e) => handleUpload(e)}>
-    //     <input
-    //       type="text"
-    //       onChange={(e) => setName(e.target.value)}
-    //       placeholder="video name"
-    //     ></input>
-    //     <input
-    //       type="text"
-    //       onChange={(e) => setDesc(e.target.value)}
-    //       placeholder="desc"
-    //     ></input>
-    //     <input type="file" onChange={(e) => setFile(e.target.files)}></input>
-    //     <button type="submit">Upload Video</button>
-    //   </form>
-    // </Fragment>
   );
 };
 

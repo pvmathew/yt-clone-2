@@ -18,25 +18,34 @@ const checkAuthenticated = (req, res, next) => {
   }
 };
 
+// require login to upload
 router.use(checkAuthenticated);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/videos");
+    cb(null, __dirname + "/public/videos");
   },
   filename: (req, file, cb) => {
+    console.log("Filename");
     console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 const fileFilter = (req, file, cb) => {
   if (file.mimetype == "video/mp4") {
+    console.log("Filter ok");
     cb(null, true);
   } else {
     cb(null, false);
   }
 };
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  onFileUploadStart: () => {
+    console.log(file.originalname + " is starting to upload ...");
+  },
+});
 
 const generateThumbnail = (req, res, next) => {
   // req.file
@@ -50,6 +59,7 @@ const generateThumbnail = (req, res, next) => {
   //   path: 'public/videos/1604904740237.mp4',
   //   size: 4236260
   // }
+  console.log("Generating thumbnail");
 
   const filename = req.file.filename.split(".")[0] + ".png";
 
@@ -59,9 +69,9 @@ const generateThumbnail = (req, res, next) => {
       timemarks: ["1"], // number of seconds
       filename: filename,
     },
-    "./public/thumbnails",
+    __dirname + "/public/thumbnails",
     function (err) {
-      console.log("screenshots were saved");
+      console.log("screenshot was made");
     }
   );
 
@@ -73,23 +83,12 @@ router.post(
   upload.single("file"),
   generateThumbnail,
   async (req, res, next) => {
+    console.log("Saving info into database");
     const { name, desc } = req.body;
     const username = req.user.t_name_user;
-    const url =
-      req.protocol +
-      "://" +
-      req.get("host") +
-      "/videos" +
-      "/" +
-      req.file.filename;
+    const url = "videos" + "/" + req.file.filename;
     const thumbUrl =
-      req.protocol +
-      "://" +
-      req.get("host") +
-      "/thumbnails" +
-      "/" +
-      req.file.filename.split(".")[0] +
-      ".png";
+      "thumbnails" + "/" + req.file.filename.split(".")[0] + ".png";
     const currentDate = new Date();
 
     try {

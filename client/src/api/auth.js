@@ -1,7 +1,7 @@
 export async function sendLoginRequest(email, password) {
   const userLogin = { email, password };
 
-  const response = await fetch("http://localhost:2000/auth/login", {
+  const response = await fetch("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userLogin),
@@ -19,7 +19,7 @@ export async function sendLoginRequest(email, password) {
 }
 
 export async function sendLogoutRequest(email, password) {
-  const response = await fetch("http://localhost:2000/auth/logout", {
+  const response = await fetch("/auth/logout", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     mode: "cors",
@@ -32,7 +32,7 @@ export async function sendLogoutRequest(email, password) {
 }
 
 export async function sendRegisterRequest(newUser) {
-  const response = await fetch("http://localhost:2000/auth/register", {
+  const response = await fetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newUser),

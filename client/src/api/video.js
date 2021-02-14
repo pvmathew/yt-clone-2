@@ -1,5 +1,5 @@
 export async function getVideo(id) {
-  const response = await fetch("http://localhost:2000/videos/" + id, {
+  const response = await fetch("/videos/" + id, {
     method: "GET",
     mode: "cors",
     credentials: "include",
@@ -9,7 +9,7 @@ export async function getVideo(id) {
   return data;
 }
 export async function likeVideo(id) {
-  const response = await fetch("http://localhost:2000/videos/" + id, {
+  const response = await fetch("/videos/" + id, {
     method: "PUT",
     mode: "cors",
     credentials: "include",
@@ -20,7 +20,7 @@ export async function likeVideo(id) {
 }
 
 export async function sendComment(id, comment) {
-  const response = await fetch("http://localhost:2000/videos/" + id, {
+  const response = await fetch("/videos/" + id, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id, comment }),
