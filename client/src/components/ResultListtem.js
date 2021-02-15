@@ -29,14 +29,18 @@ const ResultItem = (props) => {
             }}
           >
             <Image
-              src={result.t_thumb_url || "../images/image.png"}
+              src={result.t_thumb_url}
+              onError={(e) => {
+                e.target.src = "../images/image.png";
+              }}
+              alt="result thumbnail"
               style={{
                 height: "100%",
                 maxWidth: "100%",
                 marginLeft: "auto",
                 marginRight: "auto",
               }}
-            />
+            ></Image>
           </div>
         </Segment.Group>
         <Segment.Group horizontal>
