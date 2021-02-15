@@ -16,7 +16,7 @@ const checkAuthenticated = (req, res, next) => {
     console.log("User is authenticated");
     next();
   } else {
-    console.log("req.user wasnt defined!")
+    console.log("req.user wasnt defined!");
     res.status(401).json({ message: "Please login." });
   }
 };
@@ -55,36 +55,19 @@ router.get("/signature", (req, res) => {
   });
 });
 
-const generateThumbnail = (req, res, next) => {
-  console.log("Generating thumbnail");
-  const { name, desc, url } = req.body;
-  console.log(req.body);
-  var screenshot = new ffmpeg({ source: url }) // put in the source path of the video
-    .takeScreenshots({
-      count: 1,
-      timemarks: ["50%"],
-      filename: "screenshot.png",
-      folder: "./",
-    });
-
-  next();
-};
-
 router.post(
   "/upload",
-  // generateThumbnail,
   async (req, res, next) => {
     console.log("Saving info into database");
     const { name, desc, url } = req.body;
     const username = req.user.t_name_user;
-    // const thumbUrl =
-    //   "thumbnails" + "/" + req.file.filename.split(".")[0] + ".png";
+    const thumbUrl = url.replace(/\.\w+$/, `.jpg`);
     const currentDate = new Date();
 
     try {
       const newVideo = await pool.query(
         "INSERT INTO videos (t_name_user, t_name_video, t_desc, t_url, t_thumb_url, d_upload_date, i_num_views, i_num_likes) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
-        [username, name, desc, url, "", currentDate, 0, 0]
+        [username, name, desc, url, thumbUrl, currentDate, 0, 0]
       );
 
       if (newVideo.rowCount) {
